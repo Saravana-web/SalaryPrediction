@@ -2,24 +2,25 @@ import streamlit as st
 import pickle
 import numpy as np
 
-# Load model and encoders
+# Load trained model (ONLY model)
 with open("salary.pkl", "rb") as f:
     model = pickle.load(f)
 
 st.title("💼 Salary Prediction App")
-st.write("Predict Salary using Experience, Degree, and Job Title")
+st.write("Predict Salary based on Years of Experience")
 
-# Dropdown inputs
+# Optional inputs (not used for prediction)
 education = st.selectbox(
     "Select Education Level",
-    edu_encoder.classes_
+    ["Bachelor's", "Master's", "PhD"]
 )
 
 job = st.selectbox(
     "Select Job Title",
-    job_encoder.classes_
+    ["Software Engineer", "Data Analyst", "Senior Manager", "Sales Associate", "Director"]
 )
 
+# Main input used for prediction
 experience = st.number_input(
     "Enter Years of Experience",
     min_value=0.0,
@@ -27,16 +28,8 @@ experience = st.number_input(
     step=0.5
 )
 
-# Encode inputs
-edu_encoded = edu_encoder.transform([education])[0]
-job_encoded = job_encoder.transform([job])[0]
-
-# Predict
+# Predict salary
 if st.button("Predict Salary"):
-    input_data = np.array([[edu_encoded, job_encoded, experience]])
+    input_data = np.array([[experience]])
     prediction = model.predict(input_data)
-
-
     st.success(f"Predicted Salary: ₹ {prediction[0]:,.2f}")
-
-
