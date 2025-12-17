@@ -3,7 +3,7 @@ import pickle
 import numpy as np
 
 # Load model and encoders
-with open("salary_model.pkl", "rb") as f:
+with open("salary_data.pkl", "rb") as f:
     model, edu_encoder, job_encoder = pickle.load(f)
 
 st.title("💼 Salary Prediction App")
@@ -35,5 +35,6 @@ job_encoded = job_encoder.transform([job])[0]
 if st.button("Predict Salary"):
     input_data = np.array([[edu_encoded, job_encoded, experience]])
     prediction = model.predict(input_data)
+
 
     st.success(f"Predicted Salary: ₹ {prediction[0]:,.2f}")
